@@ -35,3 +35,4 @@ terraform.rc
 
 *.env
 scripts/keys
+secret
