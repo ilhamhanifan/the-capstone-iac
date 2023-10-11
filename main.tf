@@ -8,6 +8,18 @@ module "vpc" {
   subnet_ip_cidr_range = "10.10.0.0/24"
 }
 
+# GKE MODULE
+module "gke" {
+  source = "./modules/gke"
+  region = var.region
+  node_locations = ["asia-southeast2-b", "asia-southeast2-c"]
+  project = var.project
+  vpc = module.vpc.vpc_name
+  subnet = module.vpc.subnet_name
+  gke_num_nodes = 1
+  depends_on = [ module.vpc ]
+}
+
 # Artifact Registry
 resource "google_artifact_registry_repository" "registry" {
   location      = "asia-southeast2"
