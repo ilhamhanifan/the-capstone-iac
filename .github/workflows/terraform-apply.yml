@@ -1,0 +1,47 @@
+name: 'Terraform Apply'
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: 'Terraform Apply job'
+    # runs-on: [self-hosted, capstone]
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Setup Terraform Variables
+      id: vars
+      run: echo "${{ secrets.TFVARS }}" | base64 -d > terraform.tfvars
+
+    - name: Terraform Init
+      run: |
+        terraform init \
+          -backend-config="bucket=${{ vars.TF_BUCKET }}" \
+          -backend-config="prefix=state" 
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
+
+    - name: Terraform Plan
+      run: terraform plan -var-file=terraform.tfvars -input=false
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
+
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -var-file=terraform.tfvars -auto-approve -input=false
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
+
