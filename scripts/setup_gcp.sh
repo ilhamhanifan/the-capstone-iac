@@ -95,9 +95,9 @@ echo "Script starts..."
 # enable_gcp_api "${project_id}"
 
 ## Create terraform IAM service account and the credentials json files
-# create_terraform_service_account "${dev_project}" "terraform-sa" "Terraform Service Account"
+create_terraform_service_account "${project_id}" "terraform-sa" "Terraform Service Account"
 
 ## Create cloud storage bucket for terraform statefiles
-create_bucket "${project_id}" "the-capstone-tfstate"
+create_bucket "${project_id}" "thecapstone-tfstate"
 
 echo "Script ends..."
