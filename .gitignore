@@ -34,4 +34,4 @@ override.tf.json
 terraform.rc
 
 *.env
-keys/*
+scripts/keys
