@@ -1,3 +1,13 @@
+# VPC MODULE
+module "vpc" {
+  source = "./modules/vpc"
+  vpc_name = "thecapstone-vpc"
+  vpc_description = "thecapstone vpc"
+  vpc_project = var.project
+  subnet_name = "${var.project}-subnet"
+  subnet_ip_cidr_range = "10.10.0.0/24"
+}
+
 # Artifact Registry
 resource "google_artifact_registry_repository" "registry" {
   location      = "asia-southeast2"
