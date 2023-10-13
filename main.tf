@@ -34,7 +34,7 @@ resource "google_artifact_registry_repository" "registry-dev" {
 
 resource "google_artifact_registry_repository" "registry-prod" {
   location      = "asia-southeast2"
-  repository_id = "python-app-prod"
+  repository_id = "python-app-main"
   description   = "thecapstone docker artifact registry"
   format        = "DOCKER"
 
