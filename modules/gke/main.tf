@@ -39,8 +39,7 @@ resource "google_container_node_pool" "primary-nodes" {
   node_config {
     service_account = google_service_account.sa.email 
     oauth_scopes = [
-      "https://www.googleapis.com/auth/logging.write",
-      "https://www.googleapis.com/auth/monitoring", 
+      "default"
     ]
 
     machine_type = "n1-standard-1"
