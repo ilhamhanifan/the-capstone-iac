@@ -21,9 +21,20 @@ module "gke" {
 }
 
 # Artifact Registry
-resource "google_artifact_registry_repository" "registry" {
+resource "google_artifact_registry_repository" "registry-dev" {
   location      = "asia-southeast2"
-  repository_id = "python-app"
+  repository_id = "python-app-dev"
+  description   = "thecapstone docker artifact registry"
+  format        = "DOCKER"
+
+  docker_config {
+    immutable_tags = true
+  }
+}
+
+resource "google_artifact_registry_repository" "registry-prod" {
+  location      = "asia-southeast2"
+  repository_id = "python-app-prod"
   description   = "thecapstone docker artifact registry"
   format        = "DOCKER"
 
