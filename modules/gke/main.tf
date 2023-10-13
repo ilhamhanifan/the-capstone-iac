@@ -3,6 +3,17 @@ data "google_container_engine_versions" "gke_version" {
   version_prefix = "1.27."
 }
 
+resource "google_service_account" "sa" {
+  account_id   = "gke-read-from-acr"
+  display_name = "GKE Read From ACR"
+}
+
+resource "google_project_iam_member" "allow_image_pull" {
+  project = var.project
+  role   = "roles/artifactregistry.reader"
+  member = "serviceAccount:${google_service_account.sa.email}"
+}
+
 resource "google_container_cluster" "primary-cluster" {
   name = "${var.project}-gke"
   location = var.region
@@ -26,6 +37,7 @@ resource "google_container_node_pool" "primary-nodes" {
   node_count = var.gke_num_nodes
 
   node_config {
+    service_account = google_service_account.sa.email 
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring", 
