@@ -10,7 +10,7 @@ resource "google_service_account" "sa" {
 
 resource "google_project_iam_member" "allow_image_pull" {
   project = var.project
-  role   = "roles/artifactregistry.reader"
+  role   = "roles/artifactregistry.admin"
   member = "serviceAccount:${google_service_account.sa.email}"
 }
 
